@@ -2,7 +2,8 @@ import { useProfile } from "@/hooks/use-profile";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import stockImage from "@assets/stock_images/professional_softwar_92ca1815.jpg";
+import { Link } from "wouter";
+import { Linkedin, Mail, Github } from "lucide-react";
 
 export default function About() {
   const { data: profile, isLoading } = useProfile();
@@ -36,9 +37,31 @@ export default function About() {
                 <p className="mb-6">
                   My goal is to always build products that provide pixel-perfect, performant experiences. I joined the engineering team at a startup where I work on a wide variety of interesting and meaningful projects on a daily basis.
                 </p>
-                <p>
-                  When I'm not coding, you can find me hiking in the mountains, reading sci-fi novels, or experimenting with new cooking recipes.
-                </p>
+                <div className="flex gap-4 mb-8">
+                  {profile?.linkedinUrl && (
+                    <a 
+                      href={profile.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-full bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary transition-all"
+                    >
+                      <Linkedin className="w-5 h-5" />
+                    </a>
+                  )}
+                  {profile?.githubUrl && (
+                    <a 
+                      href={profile.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-full bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary transition-all"
+                    >
+                      <Github className="w-5 h-5" />
+                    </a>
+                  )}
+                  <Link href="/contact" className="p-3 rounded-full bg-card border border-border text-muted-foreground hover:text-primary hover:border-primary transition-all">
+                    <Mail className="w-5 h-5" />
+                  </Link>
+                </div>
               </div>
 
               <div>
@@ -65,12 +88,14 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative z-10">
-                <img 
-                  src={stockImage}
-                  alt="Erdogan Kaya" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="aspect-[3/4] rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative z-10 bg-card">
+                {profile?.imageUrl && (
+                  <img 
+                    src={profile.imageUrl}
+                    alt={profile.name} 
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               
               {/* Decorative elements */}

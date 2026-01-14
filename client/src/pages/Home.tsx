@@ -45,15 +45,11 @@ export default function Home() {
               {profile?.bio || "I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently focused on accessible, human-centered products."}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/projects">
-                <a className="inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-bold text-black transition-transform hover:-translate-y-1 hover:shadow-lg active:translate-y-0">
+              <Link href="/projects" className="inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-bold text-black transition-transform hover:-translate-y-1 hover:shadow-lg active:translate-y-0">
                   View Projects
-                </a>
               </Link>
-              <Link href="/contact">
-                <a className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 text-sm font-bold text-white transition-all hover:bg-white/10 hover:border-white/40">
+              <Link href="/contact" className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 text-sm font-bold text-white transition-all hover:bg-white/10 hover:border-white/40">
                   Contact Me
-                </a>
               </Link>
             </div>
           </motion.div>
@@ -64,14 +60,16 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative lg:h-[600px] hidden lg:block"
           >
-            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+            <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-card">
               {/* Image Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10" />
-              <img 
-                src={stockImage} 
-                alt="Erdogan Kaya" 
-                className="w-full h-full object-cover"
-              />
+              {profile?.imageUrl && (
+                <img 
+                  src={profile.imageUrl} 
+                  alt={profile.name} 
+                  className="w-full h-full object-cover"
+                />
+              )}
             </div>
           </motion.div>
         </div>
@@ -91,10 +89,8 @@ export default function Home() {
                 A selection of projects that showcase my passion for building high-quality software.
               </p>
             </div>
-            <Link href="/projects">
-              <a className="hidden md:flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium">
+            <Link href="/projects" className="hidden md:flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium">
                 View All <ArrowRight className="w-4 h-4" />
-              </a>
             </Link>
           </div>
 
@@ -111,10 +107,8 @@ export default function Home() {
           </div>
           
           <div className="mt-12 text-center md:hidden">
-            <Link href="/projects">
-              <a className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium">
+            <Link href="/projects" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium">
                 View All Projects <ArrowRight className="w-4 h-4" />
-              </a>
             </Link>
           </div>
         </div>

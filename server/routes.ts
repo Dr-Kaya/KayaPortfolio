@@ -53,10 +53,10 @@ async function seedDatabase() {
       name: "Erdogan Kaya",
       title: "Senior Full Stack Engineer",
       bio: "Passionate developer with over 8 years of experience building scalable web applications. Expert in React, Node.js, and cloud architecture. I love turning complex problems into simple, beautiful solutions.",
-      imageUrl: "/images/profile.jpg", // Frontend will map this to the asset
+      imageUrl: "/images/profile.jpg",
       email: "erdogan@example.com",
       githubUrl: "https://github.com/erdogan",
-      linkedinUrl: "https://linkedin.com/in/erdogan"
+      linkedinUrl: "https://www.linkedin.com/in/erdogan-kaya-9a4108100/"
     });
 
     await storage.createProject({
