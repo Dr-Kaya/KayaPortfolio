@@ -1,4 +1,4 @@
-import { pgTable, text, serial, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, varchar, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -29,9 +29,17 @@ export const messages = pgTable("messages", {
   message: text("message").notNull(),
 });
 
+export const guestbook = pgTable("guestbook", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  message: text("message").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertProfileSchema = createInsertSchema(profile).omit({ id: true });
 export const insertProjectSchema = createInsertSchema(projects).omit({ id: true });
 export const insertMessageSchema = createInsertSchema(messages).omit({ id: true });
+export const insertGuestbookSchema = createInsertSchema(guestbook).omit({ id: true, createdAt: true });
 
 export type Profile = typeof profile.$inferSelect;
 export type InsertProfile = z.infer<typeof insertProfileSchema>;
@@ -39,3 +47,5 @@ export type Project = typeof projects.$inferSelect;
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+export type GuestbookEntry = typeof guestbook.$inferSelect;
+export type InsertGuestbookEntry = z.infer<typeof insertGuestbookSchema>;

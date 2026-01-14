@@ -1,6 +1,6 @@
 import { db } from "./db";
-import { profile, projects, messages, type Profile, type InsertProfile, type Project, type InsertProject, type Message, type InsertMessage } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { profile, projects, messages, guestbook, type Profile, type InsertProfile, type Project, type InsertProject, type Message, type InsertMessage, type GuestbookEntry, type InsertGuestbookEntry } from "@shared/schema";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   getProfile(): Promise<Profile | undefined>;
@@ -8,6 +8,8 @@ export interface IStorage {
   getProjects(): Promise<Project[]>;
   createProject(project: InsertProject): Promise<Project>;
   createMessage(message: InsertMessage): Promise<Message>;
+  getGuestbookEntries(): Promise<GuestbookEntry[]>;
+  createGuestbookEntry(entry: InsertGuestbookEntry): Promise<GuestbookEntry>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -33,6 +35,15 @@ export class DatabaseStorage implements IStorage {
   async createMessage(insertMessage: InsertMessage): Promise<Message> {
     const [m] = await db.insert(messages).values(insertMessage).returning();
     return m;
+  }
+
+  async getGuestbookEntries(): Promise<GuestbookEntry[]> {
+    return await db.select().from(guestbook).orderBy(desc(guestbook.createdAt));
+  }
+
+  async createGuestbookEntry(entry: InsertGuestbookEntry): Promise<GuestbookEntry> {
+    const [e] = await db.insert(guestbook).values(entry).returning();
+    return e;
   }
 }
 

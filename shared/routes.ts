@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { insertMessageSchema, profile, projects, messages } from './schema';
+import { insertMessageSchema, insertGuestbookSchema, profile, projects, messages, guestbook } from './schema';
 
 export const errorSchemas = {
   validation: z.object({
@@ -41,6 +41,24 @@ export const api = {
       input: insertMessageSchema,
       responses: {
         200: z.custom<typeof messages.$inferSelect>(),
+        400: errorSchemas.validation,
+      },
+    },
+  },
+  guestbook: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/guestbook',
+      responses: {
+        200: z.array(z.custom<typeof guestbook.$inferSelect>()),
+      },
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/guestbook',
+      input: insertGuestbookSchema,
+      responses: {
+        201: z.custom<typeof guestbook.$inferSelect>(),
         400: errorSchemas.validation,
       },
     },
