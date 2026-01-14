@@ -5,9 +5,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Linkedin, Github } from "lucide-react";
 import { motion } from "framer-motion";
-import stockImage from "@assets/stock_images/professional_softwar_92ca1815.jpg";
 
 export default function Home() {
   const { data: profile, isLoading: profileLoading } = useProfile();
@@ -44,13 +43,26 @@ export default function Home() {
             <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-lg leading-relaxed">
               {profile?.bio || "I'm a Full Stack Developer specializing in building exceptional digital experiences. Currently focused on accessible, human-centered products."}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Link href="/projects" className="inline-flex h-12 items-center justify-center rounded-full bg-white px-8 text-sm font-bold text-black transition-transform hover:-translate-y-1 hover:shadow-lg active:translate-y-0">
                   View Projects
               </Link>
               <Link href="/contact" className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 text-sm font-bold text-white transition-all hover:bg-white/10 hover:border-white/40">
                   Contact Me
               </Link>
+            </div>
+            
+            <div className="flex gap-4">
+              {profile?.linkedinUrl && (
+                <a href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 text-muted-foreground hover:text-primary hover:border-primary transition-all">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+              )}
+              {profile?.githubUrl && (
+                <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 text-muted-foreground hover:text-primary hover:border-primary transition-all">
+                  <Github className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </motion.div>
 
