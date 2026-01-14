@@ -63,6 +63,23 @@ export const api = {
       },
     },
   },
+  weather: {
+    get: {
+      method: 'GET' as const,
+      path: '/api/weather',
+      responses: {
+        200: z.object({
+          daily: z.object({
+            time: z.array(z.string()),
+            temperature_2m_max: z.array(z.number()),
+            temperature_2m_min: z.array(z.number()),
+            weathercode: z.array(z.number()),
+          }),
+        }),
+        500: errorSchemas.internal,
+      },
+    },
+  },
 };
 
 export function buildUrl(path: string, params?: Record<string, string | number>): string {

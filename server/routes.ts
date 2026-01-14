@@ -41,6 +41,24 @@ export async function registerRoutes(
     }
   });
 
+  // Weather (Arlington, TX)
+  app.get(api.weather.get.path, async (req, res) => {
+    try {
+      const lat = 32.7357;
+      const lon = -97.1081;
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=America/Chicago&forecast_days=7`
+      );
+      if (!response.ok) {
+        throw new Error('Weather API request failed');
+      }
+      const data = await response.json();
+      res.json(data);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to fetch weather data' });
+    }
+  });
+
   // Guestbook
   app.get(api.guestbook.list.path, async (req, res) => {
     const entries = await storage.getGuestbookEntries();

@@ -1,12 +1,29 @@
 import { useProfile } from "@/hooks/use-profile";
+import { useWeather, getWeatherIcon, getWeatherDescription } from "@/hooks/use-weather";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Linkedin, Mail, Github } from "lucide-react";
+import { Linkedin, Mail, Github, Sun, Cloud, CloudRain, CloudSnow, CloudLightning, CloudSun, MapPin } from "lucide-react";
+
+const WeatherIcon = ({ code }: { code: number }) => {
+  const iconType = getWeatherIcon(code);
+  const className = "w-8 h-8";
+  switch (iconType) {
+    case "sun": return <Sun className={`${className} text-yellow-400`} />;
+    case "cloud-sun": return <CloudSun className={`${className} text-yellow-300`} />;
+    case "cloud": return <Cloud className={`${className} text-gray-400`} />;
+    case "cloud-rain": return <CloudRain className={`${className} text-blue-400`} />;
+    case "cloud-snow": return <CloudSnow className={`${className} text-blue-200`} />;
+    case "cloud-lightning": return <CloudLightning className={`${className} text-purple-400`} />;
+    default: return <Cloud className={`${className} text-gray-400`} />;
+  }
+};
 
 export default function About() {
   const { data: profile, isLoading } = useProfile();
+  const { data: weather, isLoading: weatherLoading } = useWeather();
 
   const skills = [
     "JavaScript (ES6+)", "TypeScript", "React", "Node.js", 
@@ -103,6 +120,60 @@ export default function About() {
               <div className="absolute -bottom-10 -left-10 w-full h-full bg-secondary/30 rounded-3xl z-0 hidden lg:block backdrop-blur-3xl" />
             </motion.div>
           </div>
+
+          {/* Weather Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-24"
+          >
+            <div className="flex items-center gap-2 mb-8">
+              <MapPin className="w-5 h-5 text-primary" />
+              <h2 className="text-2xl md:text-3xl font-display font-bold">Weather in Arlington, TX</h2>
+            </div>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+              {weatherLoading ? (
+                Array.from({ length: 7 }).map((_, i) => (
+                  <Card key={i} className="animate-pulse">
+                    <CardContent className="p-4 h-32" />
+                  </Card>
+                ))
+              ) : weather?.daily ? (
+                weather.daily.time.map((date, index) => {
+                  const dayName = new Date(date).toLocaleDateString("en-US", { weekday: "short" });
+                  const monthDay = new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                  return (
+                    <Card key={date} className="border-border/50 hover:border-primary/30 transition-colors">
+                      <CardContent className="p-4 text-center">
+                        <p className="font-semibold text-white">{dayName}</p>
+                        <p className="text-xs text-muted-foreground mb-3">{monthDay}</p>
+                        <div className="flex justify-center mb-3">
+                          <WeatherIcon code={weather.daily.weathercode[index]} />
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {getWeatherDescription(weather.daily.weathercode[index])}
+                        </p>
+                        <div className="flex justify-center gap-2 text-sm">
+                          <span className="text-white font-medium">
+                            {Math.round(weather.daily.temperature_2m_max[index])}°
+                          </span>
+                          <span className="text-muted-foreground">
+                            {Math.round(weather.daily.temperature_2m_min[index])}°
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+              ) : (
+                <p className="col-span-full text-muted-foreground text-center py-8">
+                  Weather data unavailable
+                </p>
+              )}
+            </div>
+          </motion.div>
         </div>
       </main>
 
