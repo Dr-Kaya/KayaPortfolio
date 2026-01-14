@@ -104,5 +104,10 @@ async function seedDatabase() {
       projectUrl: "https://example.com/ai-gen",
       imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80"
     });
+
+    await storage.createGuestbookEntry({
+      name: "Sarah Chen",
+      message: "Amazing portfolio! Your projects are truly inspiring. Looking forward to seeing more of your work."
+    });
   }
 }
